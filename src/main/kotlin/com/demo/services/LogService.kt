@@ -7,9 +7,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object LogService {
 
     fun getAll(): List<ExecutionLogDTO> = transaction {
-        val logs = ExecutionLogs
+        val executor = Users.alias("executor")
+        ExecutionLogs
             .innerJoin(AiProposals, { proposalId }, { AiProposals.id })
-            .innerJoin(Users, { ExecutionLogs.executedBy }, { Users.id })
+            .join(executor, JoinType.INNER, ExecutionLogs.executedBy, executor[Users.id])
             .selectAll()
             .orderBy(ExecutionLogs.createdAt, SortOrder.DESC)
             .map { row ->
@@ -18,13 +19,12 @@ object LogService {
                     proposalId = row[ExecutionLogs.proposalId],
                     proposalQuery = row[AiProposals.query],
                     executedBy = row[ExecutionLogs.executedBy],
-                    executorName = row[Users.username],
+                    executorName = row[executor[Users.username]],
                     action = row[ExecutionLogs.action],
                     result = row[ExecutionLogs.result],
                     success = row[ExecutionLogs.success],
                     createdAt = row[ExecutionLogs.createdAt]
                 )
             }
-        logs
     }
 }

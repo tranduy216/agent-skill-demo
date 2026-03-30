@@ -10,7 +10,6 @@ class ApplicationTest {
 
     @Test
     fun testLoginPageLoads() = testApplication {
-        application { module() }
         val response = client.get("/login")
         assertEquals(HttpStatusCode.OK, response.status)
         assertTrue(response.bodyAsText().contains("AI Assistant Login"))
@@ -18,7 +17,6 @@ class ApplicationTest {
 
     @Test
     fun testUnauthenticatedRedirectsToLogin() = testApplication {
-        application { module() }
         val response = client.get("/")
         // When not authenticated, should redirect to login or show login page
         assertTrue(
@@ -30,7 +28,6 @@ class ApplicationTest {
 
     @Test
     fun testLoginWithValidCredentials() = testApplication {
-        application { module() }
         val response = client.post("/login") {
             header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded.toString())
             setBody("username=admin&password=admin123")
@@ -44,7 +41,6 @@ class ApplicationTest {
 
     @Test
     fun testLoginWithInvalidCredentials() = testApplication {
-        application { module() }
         val response = client.post("/login") {
             header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded.toString())
             setBody("username=admin&password=wrong")
@@ -55,7 +51,6 @@ class ApplicationTest {
 
     @Test
     fun testLogout() = testApplication {
-        application { module() }
         val response = client.get("/logout")
         // Should redirect to login
         assertTrue(

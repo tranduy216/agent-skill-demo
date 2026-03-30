@@ -21,13 +21,13 @@ object ProposalService {
     }
 
     fun getById(id: Long): AiProposalDTO? = transaction {
-        (AiProposals innerJoin Users)
+        AiProposals.innerJoin(Users, { AiProposals.userId }, { Users.id })
             .select { AiProposals.id eq id }
             .singleOrNull()?.toDTO()
     }
 
     fun getAll(): List<AiProposalDTO> = transaction {
-        (AiProposals innerJoin Users)
+        AiProposals.innerJoin(Users, { AiProposals.userId }, { Users.id })
             .selectAll()
             .orderBy(AiProposals.createdAt, SortOrder.DESC)
             .map { it.toDTO() }

@@ -10,7 +10,7 @@ fun HTML.layout(session: UserSession?, title: String = "AI Assistant", content: 
         meta { name = "viewport"; this.content = "width=device-width, initial-scale=1" }
         title { +title }
         link(rel = "stylesheet", href = "/static/css/style.css")
-        script(src = "https://unpkg.com/htmx.org@1.9.10") {}
+        script(src = "/static/js/htmx.min.js") {}
     }
     body {
         attributes["hx-boost"] = "false"

@@ -18,7 +18,7 @@ repositories {
 val ktorVersion = "2.3.7"
 val exposedVersion = "0.44.1"
 val h2Version = "2.2.224"
-val postgresVersion = "42.7.1"
+val postgresVersion = "42.7.2"
 val logbackVersion = "1.4.14"
 
 dependencies {
